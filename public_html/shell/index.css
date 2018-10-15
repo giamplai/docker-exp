@@ -1,0 +1,86 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #333;
+    color: #eee;
+    font-family: monospace;
+}
+
+#shell {
+    background: #222;
+    max-width: 100%;
+    /* margin: 50px auto 0 auto; */
+    box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    font-size: 10pt;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#shell-content {
+    height: 500px;
+    overflow: auto;
+    padding: 5px;
+    white-space: pre-wrap;
+    flex-grow: 1;
+}
+
+html, body, #shell {
+    height: 100%;
+    width: 100%;
+    max-width: none;
+}
+
+#shell {
+    margin-top: 0;
+}
+
+@media (max-width: 767px) {
+    #shell-input {
+        flex-direction: column;
+    }
+}
+
+.shell-prompt {
+    font-weight: bold;
+    color: #75DF0B;
+}
+
+.shell-prompt > span {
+    color: #1BC9E7;
+}
+
+#shell-input {
+    display: flex;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, .3);
+    border-top: rgba(255, 255, 255, .05) solid 1px;
+}
+
+#shell-input > label {
+    flex-grow: 0;
+    display: block;
+    padding: 0 5px;
+    height: 30px;
+    line-height: 30px;
+}
+
+#shell-input #shell-cmd {
+    height: 30px;
+    line-height: 30px;
+    border: none;
+    background: transparent;
+    color: #eee;
+    font-family: monospace;
+    font-size: 10pt;
+    width: 100%;
+    align-self: center;
+}
+
+#shell-input div {
+    flex-grow: 1;
+    align-items: stretch;
+}
+
+#shell-input input {
+    outline: none;
+}
