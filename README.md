@@ -5,9 +5,11 @@ PHP/Apache/MySQL Docker Container Test
 
 Commands:
 
-docker-compose up 
-docker-compose down
-docker-compose stop
+`docker-compose up` 
+`docker-compose down`
+`docker-compose stop`
+
+AIO
 
 `docker-compose stop && docker-compose down && docker-compose build && docker-compose up`
 
