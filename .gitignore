@@ -3,3 +3,5 @@
 /Nuova cartella
 /public_html/composer.lock
 /public_html/vendor
+/apache/.gitignore
+/logs
