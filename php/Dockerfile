@@ -46,3 +46,4 @@ COPY php.ini /usr/local/etc/php/php.ini
 COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug-dev.ini
 
 EXPOSE 9000
+EXPOSE 9009
