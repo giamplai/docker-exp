@@ -1,5 +1,5 @@
-/apache/apache2
+
 /mysql
 /Nuova cartella
-/public_html/vendor
 /public_html/composer.lock
+/public_html/vendor

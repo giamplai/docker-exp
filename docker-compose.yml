@@ -8,7 +8,7 @@ services:
   #     - ./docker.sock:/docker.sock
   php:
     image: "laig/php"
-    # build: php
+    build: php
     networks:
       - expnet
     depends_on:
@@ -18,16 +18,17 @@ services:
       # - "4430:4430"
       - "9000:9000"
     volumes:
-      - ./apache/apache2/:/usr/local/apache2/
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+      - ./php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
       - ./public_html/:/var/www/html/
-      - ./apache/logs/:/var/www/logs/
+      - ./logs/:/logs/
     container_name: php
     hostname: php
 
   apache:
     image: "laig/apache"
     restart: always
-    # build: apache
+    build: apache
     depends_on:
       - mysql
     networks:
@@ -36,7 +37,9 @@ services:
       - "8080:8080"
       - "4430:4430"
     volumes:
+      - ./apache/apache.conf/:/usr/local/apache2/conf/apache.conf
       - ./public_html/:/var/www/html/
+      - ./logs/:/logs/
     container_name: apache
     hostname: www
     domainname: test.lcl
