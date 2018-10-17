@@ -3,26 +3,11 @@
 .DS_Store
 
 # Application
-web/app/composer.json
-web/app/composer.lock
-web/app/vendor/
-web/app/doc/
-web/app/report/
-data/
-mysql/
-
-# PHPStorm
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/dictionaries
-
-# Netbeans
-nbproject/
-/nbproject/
-/nbproject/private/
-/nbproject/private/private.properties
+/web/vendor
+/web/composer.lock
+/web/app/doc/
+/web/app/report/
+/mysql/
 
 # SSL Certs
 etc/ssl/
-/web/vendor
-/web/composer.lock
