@@ -9,5 +9,8 @@
 /web/app/report/
 /mysql/
 
+# Logs
+/log
+
 # SSL Certs
 etc/ssl/
