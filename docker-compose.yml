@@ -1,76 +1,68 @@
-version: "2.1"
+version: '3'
 services:
-  # dns:
-  #   image: phensley/docker-dns
-  #   hostname: dns
-  #   domainname: test.lcl
-  #   volumes:
-  #     - ./docker.sock:/docker.sock
-  php:
-    image: "laig/php"
-    build: php
-    networks:
-      - expnet
-    depends_on:
-      - apache
-    ports:
-      # - "8080:8080"
-      # - "4430:4430"
-      - "9000:9000"
-    volumes:
-      - ./php/php.ini:/usr/local/etc/php/php.ini
-      - ./php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
-      - ./public_html/:/var/www/html/
-      - ./logs/:/logs/
-    container_name: php
-    hostname: php
-
-  apache:
-    image: "laig/apache"
-    restart: always
-    build: apache
-    depends_on:
-      - mysql
-    networks:
-      - expnet
-    ports:
-      - "8080:8080"
-      - "4430:4430"
-    volumes:
-      - ./apache/apache.conf/:/usr/local/apache2/conf/apache.conf
-      - ./public_html/:/var/www/html/
-      - ./logs/:/logs/
-    container_name: apache
-    hostname: www
-    domainname: test.lcl
-  # mariadb:
-  #   image: mariadb:10.1
-  #   container_name: mariadb
-  #   working_dir: /application
-  #   hostname: mariadb
-  #   restart: always
-  #   networks:
-  #     - default
-  #   volumes: 
-  #     - ./mysql:/var/lib/mysql
-  #   environment:
-  #     - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-  #     - MYSQL_DATABASE=test
-  #     - MYSQL_USER=root
-  #   ports:
-  #     - "8083:3306"
-  mysql:
-    image: "mysql:${MYSQL_VERSION:-latest}"
-    restart: always
-    networks:
-      - expnet
-    environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-    volumes: 
-      - ./mysql:/var/lib/mysql
-    container_name: mysql
-    hostname: mysql
-
+    web:
+        image: laig/nginx:alpine
+        volumes:
+            - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+            - "./etc/ssl:/etc/ssl"
+            - "./web:/var/www/html"
+            - "./log/nginx:/var/log/nginx"
+            - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
+        networks:
+            - expnet
+        ports:
+            - "8080:8080"
+            - "4430:4430"
+        environment:
+            - NGINX_HOST=${NGINX_HOST}
+        command: /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && cp /etc/certs/* /etc/ssl/ && nginx -g 'daemon off;'"
+        restart: always
+        depends_on:
+            - php
+            - mysql
+    php:
+        image: laig/php-fpm:${PHP_VERSION}
+        restart: always
+        networks:
+            - expnet
+        volumes:
+            - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+            - "./web:/var/www/html"
+    composer:
+        image: "composer"
+        networks:
+            - expnet
+        volumes:
+            - "./web:/app"
+        command: install
+    myadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        networks:
+            - expnet
+        ports:
+            - "8081:80"
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=${MYSQL_HOST}
+        restart: always
+        volumes: 
+            - ./etc/myadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+        depends_on:
+            - mysql
+    mysql:
+        image: "mysql:${MYSQL_VERSION:-latest}"
+        restart: always
+        networks:
+            - expnet
+        ports:
+            - "3306:3306"
+        environment:
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+        volumes: 
+            - ./mysql:/var/lib/mysql
+        container_name: ${MYSQL_HOST}
+        hostname: ${MYSQL_HOST}
 networks:
   expnet:
     driver: bridge

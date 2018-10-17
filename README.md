@@ -1,5 +1,5 @@
-PHP/Apache/MySQL Docker Container
-======================================
+PHP7.1-FPM/NGIX/MySQL/PhpMyAdmin Docker Container
+=================================================
 
 ### Intro
 

